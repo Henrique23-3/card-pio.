@@ -2,18 +2,39 @@
 
 Cardápio da Mostra Cultural 2026, MédioTec SENAC Recife. React, Vite, PWA e Supabase (Postgres, Auth e Storage).
 
+## Estrutura
+
+```text
+public/                       Ícones do aplicativo
+src/
+  components/PwaUpdate.jsx    Aviso de atualização do PWA
+  services/
+    supabase.js                Banco, autenticação e fotos
+    legacyMigration.js         Importação dos cadastros antigos
+  App.jsx                     Cardápio e administração
+  App.css                     Estilos da interface
+  index.css                   Estilos globais
+  main.jsx                    Inicialização do React
+supabase/migrations/          Estrutura e permissões do banco
+.env.example                  Modelo das variáveis de ambiente
+package.json                  Dependências e comandos
+vite.config.js                Build, manifesto e cache do PWA
+vercel.json                    Configuração de deploy
+```
+
+Execute os comandos na raiz do projeto. `node_modules/` e `dist/` são gerados localmente e ignorados pelo Git.
+
 ## Executar
 
 Requer Node.js 22.12 ou superior.
 
 ```bash
-cd comercio
 npm ci
 # Preencha o .env conforme o .env.example
 npm run dev
 ```
 
-Em `comercio/.env`:
+Em `.env`:
 
 ```dotenv
 VITE_SUPABASE_URL=https://SEU-PROJETO.supabase.co
@@ -46,7 +67,7 @@ No mesmo navegador e endereço usados antes, entre como administrador e clique e
 
 ## Vercel
 
-Importe o repositório mantendo **Root Directory na raiz do repositório**, sem selecionar `comercio`. O arquivo `vercel.json` da raiz já configura instalação, build, saída estática e fallback da aplicação.
+Importe o repositório mantendo **Root Directory na raiz do repositório**. O arquivo `vercel.json` da raiz já configura instalação, build, saída estática e fallback da aplicação.
 
 Em **Settings → Environment Variables**, configure para Production e Preview:
 
@@ -58,7 +79,6 @@ Use os mesmos valores do `.env`. A Vercel não recebe o `.env` local porque ele 
 ## Verificações e PWA
 
 ```bash
-cd comercio
 npm run lint
 npm run build
 npm run preview

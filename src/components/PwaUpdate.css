@@ -1,0 +1,33 @@
+.pwa-update {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 15;
+  max-width: calc(100% - 32px);
+  border: 1px solid #cdbb9b;
+  background: #f6f2e8;
+  padding: 16px;
+  font-size: 12px;
+}
+
+.pwa-update p {
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+.pwa-update div {
+  display: flex;
+  gap: 12px;
+}
+
+.pwa-update button {
+  min-height: 44px;
+  padding: 10px 16px;
+  background: #68192a;
+  color: #fff9eb;
+}
+
+.pwa-update button + button {
+  background: transparent;
+  color: #68192a;
+}

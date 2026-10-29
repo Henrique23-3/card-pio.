@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { configured, supabase, regions, isAdmin, photoUrl, listDishes, saveDish, deleteDish, legacyDishes, migrateLegacy } from './services/supabase'
-import PWABadge from './PWABadge'
+import { configured, supabase, regions, isAdmin, photoUrl, listDishes, saveDish, deleteDish } from './services/supabase'
+import { legacyDishes, migrateLegacy } from './services/legacyMigration'
+import PwaUpdate from './components/PwaUpdate'
 import './App.css'
 
 export default function App() {
@@ -78,7 +79,7 @@ export default function App() {
     <header className="site-header"><a className="wordmark" href="#" onClick={() => setManage(false)}>Brasil de<br/><strong>Muitos Sabores<span>.</span></strong></a><div className="school">MOSTRA CULTURAL<br/><b>SENAC RECIFE · 2026</b></div><button className="text-button" onClick={() => { setManage(!manage); setError('') }}>{manage ? 'Voltar ao cardápio' : 'Administração'}</button></header>
     <main>
       <section className="intro"><p className="kicker">CADERNO DE RECEITAS · TURMA 2C</p><h1>O Brasil<br/>na nossa mesa.</h1><div className="intro-note"><span>01 — 05</span><p>Ingredientes, costumes e receitas<br/>das cinco regiões do país.</p></div></section>
-      {!configured && <div className="status-box">O cardápio está aguardando a conexão com o Supabase. Preencha o arquivo <code>comercio/.env</code> e reinicie o servidor.</div>}
+      {!configured && <div className="status-box">O cardápio está aguardando a conexão com o Supabase. Preencha o arquivo <code>.env</code> e reinicie o servidor.</div>}
       {offline && <div className="status-box">Sem conexão. O aplicativo abre offline, mas a consulta e as alterações precisam de internet.</div>}
       {manage && configured && !admin ? <section className="login-panel"><p className="kicker">ÁREA DA EQUIPE</p><h2>Acessar o cadastro</h2><form onSubmit={login}><label>E-mail<input name="email" type="email" autoComplete="username" required/></label><label>Senha<input name="password" type="password" autoComplete="current-password" required/></label>{error && <p role="alert" className="error">{error}</p>}<button className="primary" disabled={busy || offline}>{busy ? 'Entrando…' : 'Entrar'}</button></form></section> : <section className="menu" id="cardapio">
         <div className="menu-heading"><h2>{manage ? 'Cadastro de pratos' : 'Nosso cardápio'}</h2><span>{dishes.length} pratos cadastrados</span></div>
@@ -97,6 +98,6 @@ export default function App() {
       {selected && <div className="dish-detail">{photo(selected) && <img src={photo(selected)} alt={selected.name}/>}<p className="kicker">{selected.region}</p><h2>{selected.name}</h2><p>{selected.description}</p></div>}
       {removing && <div><p className="kicker">{removing.region}</p><h2>Excluir {removing.name}?</h2><p>O prato e sua foto serão removidos do cardápio compartilhado.</p>{error && <p className="error" role="alert">{error}</p>}<div className="form-actions"><button disabled={busy} onClick={close}>Cancelar</button><button className="primary" disabled={busy || offline} onClick={remove}>{busy ? 'Excluindo…' : 'Excluir prato'}</button></div></div>}
     </dialog>
-    {notice && <div className="toast" role="status">{notice}<button aria-label="Fechar aviso" onClick={() => setNotice('')}>×</button></div>}<PWABadge/>
+    {notice && <div className="toast" role="status">{notice}<button aria-label="Fechar aviso" onClick={() => setNotice('')}>×</button></div>}<PwaUpdate/>
   </>
 }
