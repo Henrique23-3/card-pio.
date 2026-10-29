@@ -18,9 +18,21 @@ create policy "Admins manage dishes" on public.dishes for all to authenticated
 using ((select auth.jwt()->'app_metadata'->>'role') = 'admin')
 with check ((select auth.jwt()->'app_metadata'->>'role') = 'admin');
 
-insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
-values ('dish-photos', 'dish-photos', true, 5242880, array['image/jpeg','image/png','image/webp'])
-on conflict (id) do update set public = true, file_size_limit = excluded.file_size_limit, allowed_mime_types = excluded.allowed_mime_types;
+insert into storage.buckets (
+  id, name, "public", file_size_limit, allowed_mime_types
+)
+values (
+  'dish-photos',
+  'dish-photos',
+  true,
+  5242880,
+  array['image/jpeg', 'image/png', 'image/webp']::text[]
+)
+on conflict (id) do update
+set "public" = excluded."public",
+    file_size_limit = excluded.file_size_limit,
+    allowed_mime_types = excluded.allowed_mime_types;
+
 drop policy if exists "Public dish photos" on storage.objects;
 create policy "Public dish photos" on storage.objects for select to anon, authenticated using (bucket_id = 'dish-photos');
 drop policy if exists "Admins manage dish photos" on storage.objects;
