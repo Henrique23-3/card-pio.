@@ -23,3 +23,9 @@ dev-dist
 *.njsproj
 *.sln
 *.sw?
+
+# Configuração local do Supabase
+.env
+.env.*
+!.env.example
+.vercel

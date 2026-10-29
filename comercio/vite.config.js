@@ -9,10 +9,14 @@ export default defineConfig({
     injectRegister: false,
 
     manifest: {
-      name: 'comercio',
-      short_name: 'comercio',
-      description: 'cardapio digital 2c',
-      theme_color: '#ffffff',
+      name: 'Brasil de Muitos Sabores',
+      short_name: 'Muitos Sabores',
+      description: 'Comidas típicas das cinco regiões do Brasil',
+      theme_color: '#701426',
+      background_color: '#fff9ee',
+      lang: 'pt-BR',
+      start_url: '/',
+      display: 'standalone',
 
       icons: [{
         src: 'pwa-64x64.png',
@@ -37,6 +41,11 @@ export default defineConfig({
     workbox: {
       globPatterns: ['**/*.{js,css,html,svg,png,ico}'],
       cleanupOutdatedCaches: true,
+      runtimeCaching: [{
+        urlPattern: ({ url }) => url.pathname.startsWith('/storage/v1/object/public/dish-photos/'),
+        handler: 'CacheFirst',
+        options: { cacheName: 'dish-photos', expiration: { maxEntries: 100, maxAgeSeconds: 60 * 60 * 24 * 30 }, cacheableResponse: { statuses: [0, 200] } },
+      }],
       clientsClaim: true,
     },
 
